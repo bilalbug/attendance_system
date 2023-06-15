@@ -15,12 +15,11 @@ class IPAddressController extends Controller
 
     public function store(Request $request)
     {
-        $ipAddress = IPAddress::create([
-            'ip_address' => $request->ip_address,
-            'location' => $request->location,
-        ]);
+        $userip = $request->ip_address;
+        $routerIp = preg_replace('/\.[0-9]+$/', '.1', $userip);
+        $routeripAddress = IPAddress::create(['router_address' => $routerIp, 'location' => $request->location]);
 
-        return response()->json($ipAddress, 201);
+        return response()->json($routeripAddress, 201);
     }
 
     public function show(IPAddress $ipAddress)

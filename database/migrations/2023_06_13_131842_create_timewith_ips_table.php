@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('ip_address');
             $table->timestamp('intime')->nullable();
             $table->timestamp('outtime')->nullable();
-            $table->integer('working_hours')->nullable();
+            $table->integer('working_minutes')->nullable();
             $table->timestamps();
         });
     }

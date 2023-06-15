@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class IPAddress extends Model
 {
     use HasFactory;
-    protected $fillable = ['ip_address', 'location'];
+    protected $fillable = ['router_address', 'location'];
 }

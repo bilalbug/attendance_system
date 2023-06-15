@@ -9,7 +9,7 @@ class TimewithIPController extends Controller
 {
     public function index()
     {
-        $sessions = TimewithIP::all();
+        $sessions = TimewithIP::orderBy('id', 'desc')->get();
         return response()->json($sessions);
     }
 }

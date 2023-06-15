@@ -22,8 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/ip', [AttendanceCalController::class, 'showIPandRouter']); //show Ip
-Route::get('/start', [AttendanceCalController::class, 'StartTime']); //start timer
-Route::get('/end', [AttendanceCalController::class, 'EndTime']); //end timer
+Route::get('/start', [AttendanceCalController::class, 'StartTimer']); //start timer
+Route::get('/stop', [AttendanceCalController::class, 'StopTimer']); //end timer
 
 //Route::get('/', [IPAddressController::class, 'index']);
 

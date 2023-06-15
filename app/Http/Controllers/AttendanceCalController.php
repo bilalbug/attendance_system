@@ -23,21 +23,28 @@ class AttendanceCalController extends Controller
     }
 
 
-    public function StartTime(Request $request)
+    public function StartTimer(Request $request)
     {
         $ip = $request->ip();
         $routerIp = preg_replace('/\.[0-9]+$/', '.1', $ip);
-        $ipAddress = IPAddress::where('ip_address', $ip)->first();
+        $ipAddress = IPAddress::where('router_address', $routerIp)->first();
 
         if ($ipAddress) {
-
-            TimewithIP::create(["ip_address"=>$ip, "intime"=>Carbon::now()]);
-
-            $status = "You're connected, time started!";
-            $dateAndTime = Carbon::now();
-            $startTime = $dateAndTime->toTimeString();
-            $this->starttime = $startTime;
-            $location = $ipAddress->location;
+//            $ipUser = TimewithIP::where("ip_address",$ip)->first();
+            $ipUser = TimewithIP::where("ip_address",$ip)->orderBy('created_at', 'desc')->first();
+//            if($ipUser->outtime && empty($ipUser->intime))
+            if(!empty($ipUser->intime) and empty($ipUser->outtime))
+            {
+                return response()->json(['message'=>"You're already logged in!"]);
+            }
+            else{
+                TimewithIP::create(["ip_address"=>$ip, "intime"=>Carbon::now()]);
+                $status = "You're connected, time started!";
+                $dateAndTime = Carbon::now();
+                $startTime = $dateAndTime->toTimeString();
+                $this->starttime = $startTime;
+                $location = $ipAddress->location;
+            }
 
             return response()->json([
                 'status' => $status,
@@ -50,22 +57,26 @@ class AttendanceCalController extends Controller
         }
     }
 
-    public function EndTime(Request $request)
+    public function StopTimer(Request $request)
     {
         $ip = $request->ip();
-        $ipAddress = IPAddress::where('ip_address', $ip)->first();
+        $routerIp = preg_replace('/\.[0-9]+$/', '.1', $ip);
+        $ipAddress = IPAddress::where('router_address', $routerIp)->first();
 
         if ($ipAddress) {
+            $ipUser = TimewithIP::where("ip_address",$ip)->orderBy('created_at', 'desc')->first();
 
-            $ipUser = TimewithIP::where("ip_address",$ip)->first();
-            $ipUser->outtime = Carbon::now();
-            $ipUser->save();
-
-            $outtime = Carbon::now();
-            $total_minutes = $outtime->diffInMinutes($ipUser->intime);
-            $ipUser->working_hours = $total_minutes;
-            $ipUser->save();
-
+            if ($ipUser->outtime===null){
+                $ipUser->outtime = Carbon::now();
+                $ipUser->save();
+                $outtime = Carbon::now();
+                $total_minutes = $outtime->diffInMinutes($ipUser->intime);
+                $ipUser->working_minutes = $total_minutes;
+                $ipUser->save();
+            }
+            else{
+                return response()->json(['message'=>"You're already logged out!"]);
+            }
 
             $status = "You're timer is stop!";
             $dateAndTime = Carbon::now();
@@ -76,7 +87,7 @@ class AttendanceCalController extends Controller
                 'IPAddress' => $ip,
                 'EndTime' => $endtime,
                 'minutes' => $total_minutes,
-                'location' => $location,]);
+                'location' => $location]);
         }
         else {
             return response('IP Address not found!');
