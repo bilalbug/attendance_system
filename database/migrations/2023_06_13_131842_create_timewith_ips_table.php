@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('timewith_i_p_s', function (Blueprint $table) {
             $table->id();
             $table->string('ip_address');
-            $table->timestamp('intime')->nullable();
-            $table->timestamp('outtime')->nullable();
+            $table->string('intime')->nullable();
+            $table->string('outtime')->nullable();
             $table->integer('working_minutes')->nullable();
+            $table->string('location')->nullable();
             $table->timestamps();
         });
     }

@@ -17,7 +17,10 @@ class IPAddressController extends Controller
     {
         $userip = $request->ip_address;
         $routerIp = preg_replace('/\.[0-9]+$/', '.1', $userip);
-        $routeripAddress = IPAddress::create(['router_address' => $routerIp, 'location' => $request->location]);
+        $routeripAddress = IPAddress::create([
+            'router_address' => $routerIp,
+            'location' => $request->location
+        ]);
 
         return response()->json($routeripAddress, 201);
     }

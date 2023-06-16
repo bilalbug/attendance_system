@@ -22,11 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/ip', [AttendanceCalController::class, 'showIPandRouter']); //show Ip
-Route::get('/start', [AttendanceCalController::class, 'StartTimer']); //start timer
-Route::get('/stop', [AttendanceCalController::class, 'StopTimer']); //end timer
+Route::get('/start', [AttendanceCalController::class, 'startTimer']); //start timer
+Route::get('/stop', [AttendanceCalController::class, 'stopTimer']); //end timer
+Route::get('/status', [AttendanceCalController::class, 'attendanceStatus']); //attendance status
 
-//Route::get('/', [IPAddressController::class, 'index']);
+Route::get('/times', [TimewithIPController::class, 'index']);//show all time sessions
 
-Route::get('/times', [TimewithIPController::class, 'index']);
-
-Route::apiResource('/ipaddresses', IPAddressController::class);
+Route::apiResource('/ipaddresses', IPAddressController::class);// all operation of ips
