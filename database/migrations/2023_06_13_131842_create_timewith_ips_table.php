@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('timewith_i_p_s', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('ip_address');
             $table->string('intime')->nullable();
             $table->string('outtime')->nullable();
             $table->integer('working_minutes')->nullable();
             $table->string('location')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
