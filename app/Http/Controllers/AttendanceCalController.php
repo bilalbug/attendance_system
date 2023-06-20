@@ -14,7 +14,8 @@ class AttendanceCalController extends Controller
     public function showIPandRouter(Request $request)
     {
 //        JWTAuth::parseToken()->authenticate();
-        $clientIp = $request->ip();
+//        $clientIp = dd($request->ip());
+        $clientIp = $request->server('REMOTE_ADDR');
         $routerIp = preg_replace('/\.[0-9]+$/', '.1', $clientIp);
 
         return response()->json([
