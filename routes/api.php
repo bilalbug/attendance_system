@@ -24,11 +24,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', [UserController::class, 'store']); //register user
-Route::get('/ip', [AttendanceCalController::class, 'showIPandRouter']); //show Ip
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
     Route::apiResource('/ipaddresses', IPAddressController::class);// all operation of ips
+    Route::get('/ip', [AttendanceCalController::class, 'showIPandRouter']); //show Ip
 
     Route::post('login',[AuthController::class, 'login']); //login
     Route::get('logout',[AuthController::class, 'logout']); //logout
