@@ -13,7 +13,7 @@ class AttendanceCalController extends Controller
 {
     public function showIPandRouter(Request $request)
     {
-        JWTAuth::parseToken()->authenticate();
+//        JWTAuth::parseToken()->authenticate();
         $clientIp = $request->ip();
         $routerIp = preg_replace('/\.[0-9]+$/', '.1', $clientIp);
 
