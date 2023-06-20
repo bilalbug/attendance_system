@@ -14,14 +14,17 @@ class AttendanceCalController extends Controller
     public function showIPandRouter(Request $request)
     {
 //        JWTAuth::parseToken()->authenticate();
-//        $clientIp = dd($request->ip());
-        $clientIp = $request->server('REMOTE_ADDR');
+        $clientIp = $request->ip();
+//        $clientIp = $request->server('REMOTE_ADDR');
         $routerIp = preg_replace('/\.[0-9]+$/', '.1', $clientIp);
 
         return response()->json([
             'ip' => $clientIp,
             'router' => $routerIp
         ]);
+
+
+
     }
 
     private function startTimerHelper($user, $ip, $location)
