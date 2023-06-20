@@ -122,7 +122,7 @@ class AttendanceCalController extends Controller
 
         $timeByLocation = $this->calculateTimeByLocation($ipUserSessions);
         $totalMinutes = $this->calculateTotalMinutes($ipUserSessions);
-        $dayStatus = $this->calculateDayStatus($totalMinutes);
+        $dayStatus = $this->calculateDayStatus($totalMinutes, $ipAddress ? $ipAddress->location : 'remote');
 
         $response = [
             'ip' => $ip,
@@ -133,6 +133,7 @@ class AttendanceCalController extends Controller
 
         return response()->json($response);
     }
+
 
     private function calculateTimeByLocation($ipUserSessions)
     {
@@ -163,13 +164,16 @@ class AttendanceCalController extends Controller
         return $totalMinutes;
     }
 
-    private function calculateDayStatus($totalMinutes)
+    private function calculateDayStatus($totalMinutes, $location)
     {
-        if ($totalMinutes >= 300 && $totalMinutes <= 450) {
-            return 'FullDay';
-        } elseif ($totalMinutes >= 180 && $totalMinutes <= 300) {
-            return 'HalfDay';
+        if ($location !== 'remote') {
+            if ($totalMinutes >= 300 && $totalMinutes <= 450) {
+                return 'FullDay';
+            } elseif ($totalMinutes >= 180 && $totalMinutes <= 300) {
+                return 'HalfDay';
+            }
         }
+
         return 'Absent';
     }
 
