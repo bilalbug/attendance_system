@@ -16,14 +16,12 @@ class AttendanceCalController extends Controller
 //        JWTAuth::parseToken()->authenticate();
 //        $clientIp = $request->ip();
 //        $clientIp = $request->server('REMOTE_ADDR');
-        $clientIp = $request->ip();
-        $macAddr = exec('getmac');
+        $clientIp = $request->getClientIp();
         $routerIp = preg_replace('/\.[0-9]+$/', '.1', $clientIp);
 
         return response()->json([
             'ip' => $clientIp,
-            'router' => $routerIp,
-            'mac'=> $macAddr
+            'router' => $routerIp
         ]);
 
 
